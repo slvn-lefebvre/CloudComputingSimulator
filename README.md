@@ -35,7 +35,12 @@ realise the open and save file function
 by Zhengshuai
 ---
 ---
-Modify ven. 15. mai 2015
+version 0.4 at 22 May 2015
+modifiy the part of add the name of applications
+realise the jList to add the path of applications
+part of adding  the path  of applications manually
+Simulation part for set the configurations, jOptionPane, warning message, inputDialog,etc.
+by Zhengshuai
 
 
 =======
