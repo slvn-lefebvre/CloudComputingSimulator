@@ -27,12 +27,16 @@ Here we need to do is to develop a program by java.
 ##V. Version Note
 version 0.2 at 1 May 2015
 realise the basic frame of GUI
+
 by Zhengshuai
+
 ---
 version 0.3 at 11 May 2015
 realise the drag and drop function
 realise the open and save file function
+
 by Zhengshuai
+
 ---
 ---
 version 0.4 at 22 May 2015
@@ -40,8 +44,19 @@ modifiy the part of add the name of applications
 realise the jList to add the path of applications
 part of adding  the path  of applications manually
 Simulation part for set the configurations, jOptionPane, warning message, inputDialog,etc.
+
 by Zhengshuai
 
+---
+version 0.5 at 26 May 2015
+realise retrieve the information the user input in the dialogue and show them in the textfields
+realise to changer the type of values the server requests
+redesign the detail of Interface
+almost finished the teacher requests
+
+by Zhengshuai
+
+---
 
 =======
 A project of initial research in ISEP with the Prof. Sylvain Lefebvre
