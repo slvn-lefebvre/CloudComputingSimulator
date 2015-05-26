@@ -12,22 +12,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import javax.swing.DefaultListModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -39,16 +35,20 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
      * Creates new form CloudComputingSimulatorUI
      */
      static private final String newline = "\n";
-     private DefaultListModel listModel = new DefaultListModel();
+     //private DefaultListModel listModel = new DefaultListModel();
+     private DefaultComboBoxModel listModel = new DefaultComboBoxModel();
+     private DefaultComboBoxModel listModel2 = new DefaultComboBoxModel();
      private static final String addString = "Add";
     private static final String deleteString = "Delete";
      
+     @SuppressWarnings("empty-statement")
     public CloudComputingSimulatorUI() {
         initComponents();
         
         
         //add the listenner and mouseEvent for component for mousePressed
         MouseListener listener = new MouseAdapter(){
+            
             public void mousePressed(MouseEvent e)
         {
             JComponent c = (JComponent) e.getSource();
@@ -59,6 +59,7 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
         
         //add the listenner for mouseReleased
         MouseListener listener_rel = new MouseAdapter(){
+            
             public void mouseReleased(MouseEvent e)
             {
                 JComponent c = (JComponent) e.getSource();
@@ -76,7 +77,7 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
         //Drag and Drop functions
         TransferHandler handler = new TransferHandler("icon") {
 
-        @Override
+        
         public boolean canImport(TransferSupport support) {
             return super.canImport(support) && support.getComponent().getParent() != jPanel4;
         }
@@ -117,7 +118,16 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
             jLabel17.setTransferHandler(handler);
             
         
-            //jlist
+            //jlist2 for name
+            jList2.setModel(listModel2);
+            listModel2.addElement("Name list of Application, Please Use Remove Button to remove this line");
+            jList2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            jList2.setSelectedIndex(0);
+            jList2.setVisibleRowCount(5);
+            
+            
+            
+            //jlist1 for path
             //DefaultListModel listModel = new DefaultListModel();
             //listModel = new DefaultListModel();
             jList1.setModel(listModel);
@@ -134,6 +144,10 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
             
             deleteButton.setActionCommand(deleteString);
             deleteButton.addActionListener(new CloudComputingSimulatorUI.DeleteListener());
+            
+            removeButton.setActionCommand(deleteString);
+            removeButton.addActionListener(new CloudComputingSimulatorUI.DeleteListener());
+            
         
             pathName.addActionListener(addListener);
             pathName.getDocument().addDocumentListener(addListener);
@@ -141,29 +155,24 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
             
           
            //Open button and Save 
-            Open1.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent Event)
-                    {
-                    }
-            
-            });
-           addButton.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent Event)
-                    {
-                    }
-            
-            });
+            Open1.addActionListener((ActionEvent Event) -> {
+        });
+           addButton.addActionListener((ActionEvent Event) -> {
+        });
            
            
     }
     
         class DeleteListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
             //This method can be called only if
             //there's a valid selection
             //so go ahead and remove whatever's selected.
             int index = jList1.getSelectedIndex();
-            listModel.remove(index);
+            //listModel.remove(index);
+            listModel.removeElementAt(index);
+           
 
             int size = listModel.getSize();
 
@@ -175,6 +184,7 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
                     //removed item in last position
                     index--;
                 }
+                
 
                 jList1.setSelectedIndex(index);
                 jList1.ensureIndexIsVisible(index);
@@ -185,13 +195,14 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
     //This listener is shared by the text field and the hire button.
     class AddListener implements ActionListener, DocumentListener {
         private boolean alreadyEnabled = false;
-        private JButton button;
+        private final JButton button;
 
         public AddListener(JButton button) {
             this.button = button;
         }
 
         //Required by ActionListener.
+        @Override
         public void actionPerformed(ActionEvent e) {
             String name = pathName.getText();
 
@@ -227,20 +238,24 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
         //get more sophisticated about the algorithm.  For example,
         //you might want to ignore white space and capitalization.
         protected boolean alreadyInList(String name) {
-            return listModel.contains(name);
+           // return listModel.contains(name);
+            return false;
         }
 
         //Required by DocumentListener.
+        @Override
         public void insertUpdate(DocumentEvent e) {
             enableButton();
         }
 
         //Required by DocumentListener.
+        @Override
         public void removeUpdate(DocumentEvent e) {
             handleEmptyTextField(e);
         }
 
         //Required by DocumentListener.
+        @Override
         public void changedUpdate(DocumentEvent e) {
             if (!handleEmptyTextField(e)) {
                 enableButton();
@@ -276,6 +291,10 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
             }
         }
     }
+        
+        
+        
+        
     
 
     /**
@@ -333,6 +352,7 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
         jTextField10 = new javax.swing.JTextField();
+        jButton9 = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jLayeredPane2 = new javax.swing.JLayeredPane();
         jPanel4 = new javax.swing.JPanel();
@@ -351,15 +371,15 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         Open1 = new javax.swing.JButton();
-        jButton13 = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        log = new javax.swing.JTextArea();
+        removeButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
         pathName = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
         jLabel31 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jList2 = new javax.swing.JList();
         jLabel5 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -441,11 +461,11 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
                         .addGap(39, 39, 39)
                         .addComponent(jButton11))
                     .addComponent(Save2, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton3)
                     .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(115, Short.MAX_VALUE))
         );
 
         jPanel3Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {Save2, jButton1, jButton10, jButton3});
@@ -508,7 +528,7 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
             }
         });
 
-        jButton14.setText("Set Application");
+        jButton14.setText("Set Path Of APP");
         jButton14.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton14ActionPerformed(evt);
@@ -516,6 +536,11 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
         });
 
         jTextField1.setText("Cloud1");
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         jTextField2.setText("0");
 
@@ -547,7 +572,12 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
 
         jLabel26.setText("Power(W)");
 
-        jTextField9.setText("Class");
+        jTextField9.setText("APP Name");
+        jTextField9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField9ActionPerformed(evt);
+            }
+        });
 
         jLabel27.setText("Class Name");
 
@@ -555,155 +585,168 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
 
         jTextField10.setText("/");
 
+        jButton9.setText("Set Class Name");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
         jLayeredPane1.setLayout(jLayeredPane1Layout);
         jLayeredPane1Layout.setHorizontalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel18)
-                .addGap(138, 138, 138))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
+            .addGroup(jLayeredPane1Layout.createSequentialGroup()
                 .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                                .addContainerGap(274, Short.MAX_VALUE)
-                                .addComponent(jLabel20))
-                            .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jLayeredPane1Layout.createSequentialGroup()
                                 .addGap(59, 59, 59)
                                 .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                                        .addComponent(jButton12)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel26, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel25, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.TRAILING)))
-                                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
                                         .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jButton2)
-                                            .addComponent(jLabel14)
-                                            .addComponent(jLabel16))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel14))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
                                         .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.TRAILING)))
+                                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                                        .addComponent(jButton12)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jLabel24))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
+                                        .addComponent(jLabel16)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel23)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel26)
+                                    .addComponent(jLabel25))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                                    .addGap(49, 49, 49)
+                                    .addComponent(jLabel15))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
+                                    .addGap(52, 52, 52)
+                                    .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jButton9)
+                                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                             .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                                                .addGap(87, 87, 87)
-                                                .addComponent(jLabel19))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
-                                                .addGap(46, 46, 46)
+                                                .addComponent(jButton14)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.TRAILING)
-                                                    .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.TRAILING))))))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jTextField7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(73, 73, 73)
-                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel28)
+                                                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                                                        .addComponent(jLabel27)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                                                        .addComponent(jLabel22)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jLabel17))))
                             .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel17)
-                                    .addComponent(jButton14)
-                                    .addComponent(jButton8))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
-                                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel27, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.TRAILING)))
-                            .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                                .addComponent(jLabel15)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                .addGap(41, 41, 41)
+                                .addComponent(jButton8))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addComponent(jLabel22)
-                        .addGap(9, 9, 9)))
-                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(60, 60, 60))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel18)))
+                .addContainerGap())
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addComponent(jLabel18)
+                .addGap(101, 101, 101)
+                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jLayeredPane1Layout.createSequentialGroup()
                         .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel14)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel19)
                             .addComponent(jLabel15))
+                        .addGap(62, 62, 62)
                         .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                                .addGap(15, 15, 15)
-                                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
-                                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jButton2)
-                                            .addComponent(jLabel21)
-                                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(71, 71, 71))
-                                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jLabel20)
-                                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(112, 112, 112))))
-                            .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                                .addGap(39, 39, 39)
-                                .addComponent(jButton8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel23)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel16)
-                            .addComponent(jLabel17)
-                            .addComponent(jLabel24)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jButton8)
+                            .addComponent(jButton2)))
                     .addGroup(jLayeredPane1Layout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel22))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel27))
-                        .addGap(2, 2, 2)))
+                            .addComponent(jLabel22)))
+                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel20)
+                            .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel21)
+                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(22, 22, 22)
+                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(86, 86, 86)
                 .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel23))
                         .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton9)
+                                    .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel27)
+                                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jLayeredPane1Layout.createSequentialGroup()
                                 .addGap(22, 22, 22)
                                 .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel28)
-                                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                                    .addComponent(jLabel24)
+                                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton14)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
-                        .addComponent(jLabel18)
-                        .addGap(24, 24, 24))
+                                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel25)
+                                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel16)
+                            .addComponent(jLabel17))
+                        .addGap(93, 93, 93)))
+                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton14)
+                        .addComponent(jLabel28))
                     .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
                         .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel25))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel26)
-                            .addComponent(jButton12))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton12))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(86, 86, 86))
         );
         jLayeredPane1.setLayer(jLabel14, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(jLabel15, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -734,6 +777,7 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
         jLayeredPane1.setLayer(jLabel27, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(jLabel28, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(jTextField10, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(jButton9, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -752,11 +796,11 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
         jLayeredPane2.setLayout(jLayeredPane2Layout);
         jLayeredPane2Layout.setHorizontalGroup(
             jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 901, Short.MAX_VALUE)
+            .addGap(0, 916, Short.MAX_VALUE)
         );
         jLayeredPane2Layout.setVerticalGroup(
             jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 538, Short.MAX_VALUE)
+            .addGap(0, 599, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -879,12 +923,8 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
             }
         });
 
-        jButton13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/cloudcomputingsimulator/remove.png"))); // NOI18N
-        jButton13.setText("Remove");
-
-        log.setColumns(20);
-        log.setRows(5);
-        jScrollPane2.setViewportView(log);
+        removeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/cloudcomputingsimulator/remove.png"))); // NOI18N
+        removeButton.setText("Remove");
 
         jList1.setModel(new javax.swing.AbstractListModel() {
             String[] strings = {"","","","",""};
@@ -908,6 +948,13 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
 
         jLabel31.setText("Set Manual");
 
+        jList2.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "", "", "", "", "" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane3.setViewportView(jList2);
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -918,33 +965,33 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel7Layout.createSequentialGroup()
                                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel6)
                                     .addComponent(jLabel29)
                                     .addComponent(jLabel30)
                                     .addComponent(pathName, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addContainerGap())
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
                             .addGroup(jPanel7Layout.createSequentialGroup()
                                 .addComponent(Open1)
-                                .addGap(21, 21, 21)
-                                .addComponent(jButton13)
-                                .addGap(24, 24, 24)
+                                .addGap(18, 18, 18)
+                                .addComponent(removeButton)
+                                .addGap(27, 27, 27)
                                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel31)
                                     .addGroup(jPanel7Layout.createSequentialGroup()
                                         .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel31))))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
 
-        jPanel7Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {Open1, addButton, deleteButton, jButton13});
+        jPanel7Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {Open1, addButton, deleteButton, removeButton});
 
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -952,50 +999,49 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel29)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel30)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pathName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jLabel31))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addButton)
                     .addComponent(Open1)
-                    .addComponent(deleteButton)
-                    .addComponent(jButton13))
-                .addGap(22, 22, 22))
+                    .addComponent(removeButton)
+                    .addComponent(addButton)
+                    .addComponent(deleteButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel7Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {Open1, addButton, deleteButton, jButton13});
+        jPanel7Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {Open1, addButton, deleteButton, removeButton});
 
-        jLabel5.setText("ISEP 2014-2015 Version 0.4");
+        jLabel5.setText("ISEP 2014-2015 Version 0.5");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(51, 51, 51)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(36, 36, 36)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTabbedPane1))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(36, 36, 36)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(46, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel5)
-                .addGap(40, 40, 40))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1004,13 +1050,16 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTabbedPane1)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 640, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jLabel2.setFont(new java.awt.Font("Microsoft YaHei", 1, 36)); // NOI18N
@@ -1034,9 +1083,9 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
+                .addGap(713, 713, 713))
         );
 
         jMenu1.setText("File");
@@ -1119,36 +1168,14 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 992, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     
-    private void Open1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Open1ActionPerformed
-        // TODO add your handling code here:
-        //Handle open button action.
-        
-        
-        if (evt.getSource() == Open1) {
-            int returnVal = fileChooser.showOpenDialog(CloudComputingSimulatorUI.this);
-            
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fileChooser.getSelectedFile();
-                //This is where a real application would open the file.
-                log.append("Application's Name:" + file.getName() + "." + newline);
-                listModel.addElement(file.getPath());
-              
-            }
-            log.setCaretPosition(log.getDocument().getLength());
-        
-        //Handle save button action.
-        } 
-
-    }//GEN-LAST:event_Open1ActionPerformed
-
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem1ActionPerformed
@@ -1156,25 +1183,6 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem6ActionPerformed
-
-    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_deleteButtonActionPerformed
-
-    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
-        //if (evt.getSource() == Save1) {
-         //   int returnVal = fileChooser.showSaveDialog(CloudComputingSimulatorUI.this);
-        //    if (returnVal == JFileChooser.APPROVE_OPTION) {
-        //        File file = fileChooser.getSelectedFile();
-        //        //This is where a real application would save the file.
-        //        log.append("Saving: " + file.getName() + "." + newline);
-        //    } else {
-        //        log.append("Save command cancelled by user." + newline);
-        //    }
-         //   log.setCaretPosition(log.getDocument().getLength());
-        //}
-    }//GEN-LAST:event_addButtonActionPerformed
 
     private void Save2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Save2ActionPerformed
         // TODO add your handling code here:
@@ -1189,16 +1197,27 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_Save2ActionPerformed
 
-    private void pathNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pathNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_pathNameActionPerformed
-
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
         // TODO add your handling code here:
-        String[] list = {"A", "B", "C"};
-        JComboBox jcb = new JComboBox(list);
+        
+        String classPathNameValue;
+        JComboBox jcb = new JComboBox();
+        jcb.setModel(listModel);
         jcb.setEditable(true);
-        JOptionPane.showMessageDialog( null, jcb, "select or type a value", JOptionPane.QUESTION_MESSAGE);
+        
+        Object[] options = {"OK","CANCEL"};
+        
+        int option = JOptionPane.showConfirmDialog( null, jcb, "select or type a value", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+             JOptionPane.showOptionDialog(null, "Set Successful", "Congratulations", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
+            classPathNameValue  = (String)jcb.getSelectedItem();
+            jTextField10.setText(classPathNameValue);
+        } else {
+            JOptionPane.showOptionDialog(null, "Configure Canceled", "Warning", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+        }
+        
+        
+        
     }//GEN-LAST:event_jButton14ActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
@@ -1213,14 +1232,35 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
             "Mem Size", memSize,
             "Power",power
         };
+        
+        
+        
         Object[] options = {"OK","CANCEL"};
         int option = JOptionPane.showConfirmDialog(null, message, "Input the Values", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
+            
+            
             if (vmName.getText().isEmpty() && diskSize.getText().isEmpty() && memSize.getText().isEmpty()&& power.getText().isEmpty()) {
                 JOptionPane.showOptionDialog(null, "No Value Input", "Warning", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
             } else {
                 JOptionPane.showOptionDialog(null, "Set Successful", "Congratulations", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
             }
+            String vmNameValue = vmName.getText();
+            String diskSizeValue = diskSize.getText();
+            String memSizeValue = memSize.getText();
+            String powerValue = power.getText();
+            long diskSizeValueLong;
+            long memSizeValueLong;
+            long powerLong;
+            diskSizeValueLong = Long.parseLong(diskSizeValue);
+            memSizeValueLong = Long.parseLong(memSizeValue);
+            powerLong=Long.parseLong(powerValue);
+            jTextField5.setText(vmNameValue);
+            jTextField6.setText(diskSizeValue);
+            jTextField7.setText(memSizeValue);
+            jTextField8.setText(powerValue);
+            
+           
         } else {
             JOptionPane.showOptionDialog(null, "Configure Canceled", "Warning", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
         }
@@ -1233,14 +1273,24 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
         Object[] message = {
             "Latency:", latency
         };
+        
+        
+        
+        
+        
         Object[] options = {"OK","CANCEL"};
         int option = JOptionPane.showConfirmDialog(null, message, "Input the Values", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
+ 
             if (latency.getText().isEmpty() ) {
                 JOptionPane.showOptionDialog(null, "No Value Input", "Warning", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
             } else {
                 JOptionPane.showOptionDialog(null, "Set Successful", "Congratulations", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
             }
+            String latencyValue = latency.getText();
+            double latencyValueDouble;
+            latencyValueDouble = Double.parseDouble(latencyValue);
+            jTextField4.setText(latencyValue);
         } else {
             JOptionPane.showOptionDialog(null, "Configure Canceled", "Warning", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
         }
@@ -1257,19 +1307,101 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
             "Latitude:", latitude,
             "Longitude", longitude
         };
+        
+       
+         
+         
         Object[] options = {"OK","CANCEL"};
         int option = JOptionPane.showConfirmDialog(null, message, "Input the Values", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
+           
             if (cloudName.getText().isEmpty() && latitude.getText().isEmpty() && longitude.getText().isEmpty()) {
                 JOptionPane.showOptionDialog(null, "No Value Input", "Warning", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
             } else {
                 JOptionPane.showOptionDialog(null, "Set Successful", "Congratulations", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
             }
+            String cloudNameValue = cloudName.getText();
+            String LatitudeValue = latitude.getText();
+            String LongitudeValue = longitude.getText();
+          
+            double LatitudeValueDouble;
+            double LongitudeValueDouble;
+            LatitudeValueDouble = Double.parseDouble(LatitudeValue);
+            LongitudeValueDouble = Double.parseDouble(LongitudeValue);
+            jTextField1.setText(cloudNameValue);
+            jTextField2.setText(LatitudeValue);
+            jTextField3.setText(LongitudeValue);
         } else {
             JOptionPane.showOptionDialog(null, "Configure Canceled", "Warning", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
         }
+         
+         
 
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+       
+        
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField9ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+        String classNameValue;
+        JComboBox jcb2 = new JComboBox();
+        jcb2.setModel(listModel2);
+        jcb2.setEditable(true);
+        
+        
+        Object[] options = {"OK","CANCEL"};
+        
+        int option = JOptionPane.showConfirmDialog( null, jcb2, "select or type a value", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+             JOptionPane.showOptionDialog(null, "Set Successful", "Congratulations", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
+            classNameValue  = (String)jcb2.getSelectedItem();
+            jTextField9.setText(classNameValue);
+        } else {
+            JOptionPane.showOptionDialog(null, "Configure Canceled", "Warning", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+        }
+        
+        
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void pathNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pathNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pathNameActionPerformed
+
+    private void Open1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Open1ActionPerformed
+        // TODO add your handling code here:
+        //Handle open button action.
+
+        if (evt.getSource() == Open1) {
+            int returnVal = fileChooser.showOpenDialog(CloudComputingSimulatorUI.this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                //This is where a real application would open the file.
+                listModel2.addElement(file.getName());
+                listModel.addElement(file.getPath());
+
+            }
+
+            //Handle save button action.
+        }
+    }//GEN-LAST:event_Open1ActionPerformed
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_addButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1299,10 +1431,8 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CloudComputingSimulatorUI().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new CloudComputingSimulatorUI().setVisible(true);
         });
     }
 
@@ -1316,7 +1446,6 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -1325,6 +1454,7 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1359,6 +1489,7 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JLayeredPane jLayeredPane2;
     private javax.swing.JList jList1;
+    private javax.swing.JList jList2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -1383,7 +1514,7 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
@@ -1395,8 +1526,8 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
-    private javax.swing.JTextArea log;
     private javax.swing.JTextField pathName;
+    private javax.swing.JButton removeButton;
     // End of variables declaration//GEN-END:variables
 }
 
