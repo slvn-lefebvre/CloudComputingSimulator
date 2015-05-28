@@ -26,12 +26,14 @@ Here we need to do is to develop a program by java.
 
 ##V. Version Note
 version 0.2 at 1 May 2015
+
 *	realise the basic frame of GUI
 
 by Zhengshuai
 
 ---
 version 0.3 at 11 May 2015
+
 *	realise the drag and drop function
 *	realise the open and save file function
 
@@ -40,6 +42,7 @@ by Zhengshuai
 ---
 ---
 version 0.4 at 22 May 2015
+
 *	modifiy the part of add the name of applications
 *	realise the jList to add the path of applications
 *	part of adding  the path  of applications manually
@@ -49,10 +52,20 @@ by Zhengshuai
 
 ---
 version 0.5 at 26 May 2015
+
 *	realise retrieve the information the user input in the dialogue and *	show them in the textfields
 *	realise to changer the type of values the server requests
 *	redesign the detail of Interface
-*	almost finished the teacher requests
+
+
+by Zhengshuai
+
+---
+version 0.6 at 29 May 2015
+
+*	import the simizer jar to the GUI
+*	add a example class myTransferhander
+*	capture the output from the console and show them into a showMessage and a TextArea
 
 by Zhengshuai
 
