@@ -811,14 +811,15 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2)
-                .addContainerGap())
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(353, 353, 353)
-                .addComponent(jLabel32)
-                .addContainerGap(574, Short.MAX_VALUE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(353, 353, 353)
+                        .addComponent(jLabel32))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(70, 70, 70)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1066, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1434,16 +1435,14 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
         // Tell Java to use your special stream
         System.setOut(ps);
         // Print some output: goes to your special stream
-        //System.out.println("Foofoofoo!");
         MyImportData.run();
-// Put things back
+        // Put things back
         System.out.flush();
         System.setOut(old);
-        // Show what happened
-        
-        //System.out.println("Here: " + baos.toString());
-        JOptionPane.showMessageDialog(null, baos.toString());
+      
         logTextArea.append(baos.toString());
+        JOptionPane.showMessageDialog(null, baos.toString());
+        
 
     }//GEN-LAST:event_playButtonActionPerformed
 
