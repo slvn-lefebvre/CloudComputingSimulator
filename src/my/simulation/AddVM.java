@@ -6,6 +6,9 @@
 package my.simulation;
 
 import fr.isep.simizer.nodes.VM;
+
+import static my.actionperformed.VmSetButton.memSizeValueLong;
+import static my.actionperformed.VmSetButton.powerLong;
 import static my.simulation.SetResource.disk;
 
 /**
@@ -18,7 +21,10 @@ public class AddVM {
      // Now that we have the client, let's create a simple server.  The VM class
     // is a general machine that we can use as a server.  To get started, let's
     // create an instance of the class.
-         server = new VM(null, disk, VM.DEFAULT_MEMORY_SIZE, VM.DEFAULT_COST);
+                                           
+
+         server = new VM(null, disk, memSizeValueLong, powerLong);
+         // if the user didn't set the parameters, than the server will use the default values
         
     }
 }

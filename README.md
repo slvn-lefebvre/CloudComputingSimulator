@@ -85,6 +85,17 @@ version 0.8 at 31 May 2015
 
 by Zhengshuai
 
+---
+version 0.9 at 1 June 2015
+
+*	finished a simulation calculate simple with the simizer
+*	the user need set the VM parameter manual, with the disk(20MB), mem(1GB),power(15);
+*	the user need to set the netWork manual, with the Latency(100ms), default Latency(20ms);
+*	the result will be show in a open windows
+*	ps: with the further functions excute, I will finished it if I have the time.
+
+PENG Zhengshuai
+At Paris, 1st June 2015
 
 =======
 A project of initial research in ISEP with the Prof. Sylvain Lefebvre

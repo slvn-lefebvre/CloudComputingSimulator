@@ -21,6 +21,7 @@ public class SetFactory {
     // performs some sort of comparison between two locations.  Since that is
     // the case, we'll want each Request to reference two of the Resources.
     // We'll do this with a double for-loop.
+        
     RequestFactory factory = new RequestFactory();
     for (int i = 0; i < 10; i++) {
       for (int j = 0; j < 10; j++) {

@@ -846,12 +846,12 @@
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel24">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="Disk Size(GB)"/>
+                            <Property name="text" type="java.lang.String" value="Disk Size(MB)"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel25">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="Mem Size(MB)"/>
+                            <Property name="text" type="java.lang.String" value="Mem Size(GB)"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel26">
@@ -898,7 +898,7 @@
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel33">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="Default Latency"/>
+                            <Property name="text" type="java.lang.String" value="Default Latency(ms)"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JTextField" name="jTextField11">
@@ -1362,7 +1362,7 @@
             </Container>
             <Component class="javax.swing.JLabel" name="jLabel5">
               <Properties>
-                <Property name="text" type="java.lang.String" value="ISEP 2014-2015 Version 0.7"/>
+                <Property name="text" type="java.lang.String" value="ISEP 2014-2015 Version 0.9"/>
               </Properties>
             </Component>
           </SubComponents>

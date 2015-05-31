@@ -5,18 +5,7 @@
  */
 package my.simulation;
 
-import fr.isep.simizer.Simulation;
-import fr.isep.simizer.laws.ConstantLaw;
-import fr.isep.simizer.laws.GaussianLaw;
-import fr.isep.simizer.network.Network;
-import fr.isep.simizer.nodes.ClientNode;
-import fr.isep.simizer.nodes.VM;
-import fr.isep.simizer.requests.Request;
-import fr.isep.simizer.requests.RequestFactory;
-import static my.simulation.AddClient.client;
-import static my.simulation.AddNetwork.internet;
 import static my.simulation.AddSimulation.simulation;
-import static my.simulation.AddVM.server;
 
 /**
  *
@@ -51,12 +40,14 @@ public static void run() {
     SetFactory.setFactory();
     
     //create a application
-    //AddSimizerApp.addSimizerApp();
+    AddSimizerApp.addSimizerApp();
     
     //handle Request
     HandleRequest.handlRequest();
-    //run simulation
     
+    //ClientGenerator
+   // ClientGenerator.clientGenerator();
+    //run simulation
     simulation.runSim();
   }
      

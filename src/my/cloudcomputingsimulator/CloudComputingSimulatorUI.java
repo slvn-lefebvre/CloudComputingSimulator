@@ -346,9 +346,9 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
 
         jLabel23.setText("Name");
 
-        jLabel24.setText("Disk Size(GB)");
+        jLabel24.setText("Disk Size(MB)");
 
-        jLabel25.setText("Mem Size(MB)");
+        jLabel25.setText("Mem Size(GB)");
 
         jLabel26.setText("Power(W)");
 
@@ -372,7 +372,7 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel33.setText("Default Latency");
+        jLabel33.setText("Default Latency(ms)");
 
         jTextField11.setText("0");
 
@@ -826,7 +826,7 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
 
         jPanel7Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {Open1, addButton, deleteButton, removeButton});
 
-        jLabel5.setText("ISEP 2014-2015 Version 0.7");
+        jLabel5.setText("ISEP 2014-2015 Version 0.9");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

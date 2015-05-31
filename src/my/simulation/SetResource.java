@@ -7,6 +7,7 @@ package my.simulation;
 
 import fr.isep.simizer.storage.ResourceFactory;
 import fr.isep.simizer.storage.StorageElement;
+import static my.actionperformed.VmSetButton.diskSizeValueLong;
 
 /**
  *
@@ -24,9 +25,11 @@ public class SetResource {
 
     // We created a resource factory with 10 resources that each have a size of
     // 1 KB.  These Resources are referenced starting from zero.
-
+    
     // Next, let's create a storage element with these resources.
     disk = new StorageElement(StorageElement.MEGABYTE, 7);
+    //isk = diskSizeValueLong;
+    
     for (int i = 0; i < 10; i++) {
       disk.write(resources.getResource(i));
     }

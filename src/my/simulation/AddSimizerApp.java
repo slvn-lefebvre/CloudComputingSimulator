@@ -10,6 +10,7 @@ import fr.isep.simizer.nodes.Node;
 import fr.isep.simizer.nodes.VM;
 import fr.isep.simizer.requests.Request;
 import fr.isep.simizer.storage.StorageElement;
+import static my.actionperformed.VmSetButton.diskSizeValueLong;
 import static my.actionperformed.VmSetButton.memSizeValueLong;
 import static my.simulation.AddVM.server;
 
@@ -31,7 +32,7 @@ public class AddSimizerApp {
     
        
         
-    Application handler = new Application(0, memSizeValueLong) {
+    Application handler = new Application(0, diskSizeValueLong) {
 
       @Override
       public void init(VM.TaskScheduler scheduler) {
