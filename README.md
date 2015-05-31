@@ -73,7 +73,17 @@ by Zhengshuai
 version 0.7 at 31 May 2015
 
 *	divide the class to separated class
-*	fix some details 
+*	fix some details
+
+by Zhengshuai 
+
+---
+version 0.8 at 31 May 2015
+
+*	create a package of simulation and finish various of simizer functions
+*	can set the mem size and the parameter of network manually
+
+by Zhengshuai
 
 
 =======

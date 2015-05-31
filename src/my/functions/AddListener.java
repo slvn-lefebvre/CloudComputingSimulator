@@ -22,7 +22,8 @@ import static my.cloudcomputingsimulator.CloudComputingSimulatorUI.pathName;
  */
 public class AddListener  implements ActionListener, DocumentListener{
     private boolean alreadyEnabled = false;
-        private final JButton button;
+    private final JButton button;
+    public static String name;
 
         public AddListener(JButton button) {
             this.button = button;
@@ -31,7 +32,7 @@ public class AddListener  implements ActionListener, DocumentListener{
         //Required by ActionListener.
         @Override
         public void actionPerformed(ActionEvent e) {
-            String name = pathName.getText();
+             name = pathName.getText();
 
             //User didn't type in a unique name...
             if (name.equals("") || alreadyInList(name)) {

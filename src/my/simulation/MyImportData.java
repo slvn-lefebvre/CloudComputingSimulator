@@ -13,6 +13,10 @@ import fr.isep.simizer.nodes.ClientNode;
 import fr.isep.simizer.nodes.VM;
 import fr.isep.simizer.requests.Request;
 import fr.isep.simizer.requests.RequestFactory;
+import static my.simulation.AddClient.client;
+import static my.simulation.AddNetwork.internet;
+import static my.simulation.AddSimulation.simulation;
+import static my.simulation.AddVM.server;
 
 /**
  *
@@ -24,33 +28,35 @@ public class MyImportData {
 
 public static void run() {
   
-   Simulation simulation = new Simulation(10000);
-
-    ClientNode client = new ClientNode(0, 1);
-
+    //create a instance of Simulation class
+    AddSimulation.AddSim();
     
-    RequestFactory factory = new RequestFactory();
-    factory.addTemplate(1, new Request(1, "read", "resources=1_2", true));
-    ClientNode.configureRequestFactory(factory);
-
- 
-
-    ClientNode.configureLaws(
-            new ConstantLaw(1),
-            new ConstantLaw(0),
-            null);
-
-  
-    VM server = new VM();
-    Network internet = new Network(new GaussianLaw(60, 10));
-
-    client.setServiceAddress(server);
-
-    simulation.addNode(client);
-    simulation.addNode(server);
-    simulation.addNetwork(internet);
-    simulation.toNetworkAddNode(internet, client);
-    simulation.toNetworkAddNode(internet, server);
+    //set storage
+    SetResource.setResource();
+    
+    //create  a client use the ClientNode and define the request that the 
+    //client will sent to the server
+    AddClient.addClient();
+    
+    //create a VM server
+    AddVM.addVM();
+    
+    //create a network to communicate with the client and server
+    AddNetwork.addNetwork();
+    
+    //add all items(client,server,internet)  to simulation
+    SetSimulation.setSim();
+    
+    //set request factory
+    SetFactory.setFactory();
+    
+    //create a application
+    //AddSimizerApp.addSimizerApp();
+    
+    //handle Request
+    HandleRequest.handlRequest();
+    //run simulation
+    
     simulation.runSim();
   }
      
