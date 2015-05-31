@@ -5,33 +5,18 @@
  */
 package my.cloudcomputingsimulator;
 
-import java.awt.Toolkit;
+import my.functions.JListFuncs;
+import my.functions.DragAndDrop;
+import my.functions.AddPath;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.PipedReader;
-import java.io.PrintStream;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.TransferHandler;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
+import my.actionperformed.AppSetButton;
+import my.actionperformed.ChooseApp;
+import my.actionperformed.CloudSetButton;
+import my.actionperformed.NetWorkSetButton;
+import my.actionperformed.PlaySim;
+import my.actionperformed.SaveButton;
+import my.actionperformed.VmSetButton;
 
 /**
  *
@@ -42,120 +27,34 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
     /**
      * Creates new form CloudComputingSimulatorUI
      */
-     static private final String newline = "\n";
+     
+     private static final String newline = "\n";
      //private DefaultListModel listModel = new DefaultListModel();
-     private DefaultComboBoxModel listModel = new DefaultComboBoxModel();
-     private DefaultComboBoxModel listModel2 = new DefaultComboBoxModel();
-     private static final String addString = "Add";
-    private static final String deleteString = "Delete";
+     public static DefaultComboBoxModel listModel = new DefaultComboBoxModel();
+     public static DefaultComboBoxModel listModel2 = new DefaultComboBoxModel();
+     public static final String addString = "Add";
+     public static final String deleteString = "Delete";
+     public static final String removeString = "Remove";
+     public static int returnVal;
+     public static int returnSaveVal;
  
      
      @SuppressWarnings("empty-statement")
     public CloudComputingSimulatorUI() {
         initComponents();
-        
-        
-        //add the listenner and mouseEvent for component for mousePressed
-        MouseListener listener = new MouseAdapter(){
-            
-            public void mousePressed(MouseEvent e)
-        {
-            JComponent c = (JComponent) e.getSource();
-            TransferHandler handler = c.getTransferHandler();
-            handler.exportAsDrag(c, e, TransferHandler.COPY);
-        }
-        };
-        
-        
-    
- 
+        //DragAndDrop functions from Drag and Drop class
+        DragAndDrop.dragAndDropFunc();
 
+        //jlist2 for name
+        JListFuncs.nameList();
+   
+        //jlist1 for path
+        JListFuncs.pathList();
             
-        
-        
-        
-        //Drag and Drop functions
-        TransferHandler handler = new TransferHandler("icon") {
-
-        
-        public boolean canImport(TransferSupport support) {
-            return super.canImport(support) && support.getComponent().getParent() != jPanel4;
-        }
-
-    };
-        try { 
-            jLabel3.addMouseListener(listener);
-            jLabel7.addMouseListener(listener);
-            jLabel8.addMouseListener(listener);
-            jLabel9.addMouseListener(listener);
-            jLabel14.addMouseListener(listener);
-            jLabel15.addMouseListener(listener);
-            jLabel16.addMouseListener(listener);
-            jLabel17.addMouseListener(listener);
-       
-            
-
-            } catch(Exception e) {};
-            
-       
-          
-            
-
-
-    // use the handler on all labels (handlers can be shared, btw)
-    // for each label on imageSelectPanel
-    //imageSelectLabel.setTransferHandler(handler)
-            jLabel3.setTransferHandler(handler);
-            jLabel7.setTransferHandler(handler);
-            jLabel8.setTransferHandler(handler);
-            jLabel9.setTransferHandler(handler);
-            
-    // for each label on the target panel (aka storyPanel) 
-    //storyLabel.setTransferHandler(handler)
-            jLabel14.setTransferHandler(handler);
-            jLabel15.setTransferHandler(handler);
-            jLabel16.setTransferHandler(handler);
-            jLabel17.setTransferHandler(handler);
-        
-            
-        
-            //jlist2 for name
-            jList2.setModel(listModel2);
-            listModel2.addElement("Name list of Application, Please Use Remove Button to remove this line");
-            jList2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            jList2.setSelectedIndex(0);
-            jList2.setVisibleRowCount(5);
-            
-            
-            
-            //jlist1 for path
-            //DefaultListModel listModel = new DefaultListModel();
-            //listModel = new DefaultListModel();
-            jList1.setModel(listModel);
-            listModel.addElement("Path list of Application, Please Use Delete Button to delete this line");
-            jList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            jList1.setSelectedIndex(0);
-            jList1.setVisibleRowCount(5);
-            //jScrollPane1.add(jList1);
-            
-             AddListener addListener = new AddListener(addButton);
-            addButton.setActionCommand(addString);
-            addButton.addActionListener(addListener);
-            addButton.setEnabled(false);
-            
-            deleteButton.setActionCommand(deleteString);
-            deleteButton.addActionListener(new CloudComputingSimulatorUI.DeleteListener());
-            
-            removeButton.setActionCommand(deleteString);
-            removeButton.addActionListener(new CloudComputingSimulatorUI.DeleteListener());
-            
-        
-            pathName.addActionListener(addListener);
-            pathName.getDocument().addDocumentListener(addListener);
-            String name = listModel.getElementAt(jList1.getSelectedIndex()).toString();
+        AddPath.addPath();
             
           
-           //Open button and Save 
+        //Open button and Save 
             Open1.addActionListener((ActionEvent Event) -> {
         });
            addButton.addActionListener((ActionEvent Event) -> {
@@ -163,144 +62,7 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
            
            
     }
-    
-        class DeleteListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            //This method can be called only if
-            //there's a valid selection
-            //so go ahead and remove whatever's selected.
-            int index = jList1.getSelectedIndex();
-            //listModel.remove(index);
-            listModel.removeElementAt(index);
-           
-
-            int size = listModel.getSize();
-
-            if (size == 0) { //Nobody's left, disable firing.
-                addButton.setEnabled(false);
-
-            } else { //Select an index.
-                if (index == listModel.getSize()) {
-                    //removed item in last position
-                    index--;
-                }
-                
-
-                jList1.setSelectedIndex(index);
-                jList1.ensureIndexIsVisible(index);
-            }
-        }
-    }
-
-    //This listener is shared by the text field and the hire button.
-    class AddListener implements ActionListener, DocumentListener {
-        private boolean alreadyEnabled = false;
-        private final JButton button;
-
-        public AddListener(JButton button) {
-            this.button = button;
-        }
-
-        //Required by ActionListener.
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String name = pathName.getText();
-
-            //User didn't type in a unique name...
-            if (name.equals("") || alreadyInList(name)) {
-                Toolkit.getDefaultToolkit().beep();
-                pathName.requestFocusInWindow();
-                pathName.selectAll();
-                return;
-            }
-
-            int index = jList1.getSelectedIndex(); //get selected index
-            if (index == -1) { //no selection, so insert at beginning
-                index = 0;
-            } else {           //add after the selected item
-                index++;
-            }
-
-            listModel.insertElementAt(pathName.getText(), index);
-            //If we just wanted to add to the end, we'd do this:
-            
-
-            //Reset the text field.
-            pathName.requestFocusInWindow();
-            pathName.setText("");
-
-            //Select the new item and make it visible.
-            jList1.setSelectedIndex(index);
-            jList1.ensureIndexIsVisible(index);
-        }
-
-        //This method tests for string equality. You could certainly
-        //get more sophisticated about the algorithm.  For example,
-        //you might want to ignore white space and capitalization.
-        protected boolean alreadyInList(String name) {
-           // return listModel.contains(name);
-            return false;
-        }
-
-        //Required by DocumentListener.
-        @Override
-        public void insertUpdate(DocumentEvent e) {
-            enableButton();
-        }
-
-        //Required by DocumentListener.
-        @Override
-        public void removeUpdate(DocumentEvent e) {
-            handleEmptyTextField(e);
-        }
-
-        //Required by DocumentListener.
-        @Override
-        public void changedUpdate(DocumentEvent e) {
-            if (!handleEmptyTextField(e)) {
-                enableButton();
-            }
-        }
-
-        private void enableButton() {
-            if (!alreadyEnabled) {
-                button.setEnabled(true);
-            }
-        }
-
-        private boolean handleEmptyTextField(DocumentEvent e) {
-            if (e.getDocument().getLength() <= 0) {
-                button.setEnabled(false);
-                alreadyEnabled = false;
-                return true;
-            }
-            return false;
-        }
-    }
-    
-        public void valueChanged(ListSelectionEvent e) {
-        if (e.getValueIsAdjusting() == false) {
-
-            if (jList1.getSelectedIndex() == -1) {
-            //No selection, disable fire button.
-                deleteButton.setEnabled(false);
-
-            } else {
-            //Selection, enable the fire button.
-                deleteButton.setEnabled(true);
-            }
-        }
-    }
-        
-      //
-
-
-        
-        
-        
-    
-
+   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -509,6 +271,11 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
         jTabbedPane1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel14.setText("DataCenter");
+        jLabel14.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jLabel14KeyReleased(evt);
+            }
+        });
 
         jLabel15.setText("NetWork");
 
@@ -1040,7 +807,7 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
 
         jPanel7Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {Open1, addButton, deleteButton, removeButton});
 
-        jLabel5.setText("ISEP 2014-2015 Version 0.6");
+        jLabel5.setText("ISEP 2014-2015 Version 0.7");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -1205,156 +972,31 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
     private void Save2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Save2ActionPerformed
         // TODO add your handling code here:
             if (evt.getSource() == Save2) {
-            int returnVal = fileChooser.showSaveDialog(CloudComputingSimulatorUI.this);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fileChooser.getSelectedFile();
-                //This is where a real application would save the file.
-              
-            } 
+            returnSaveVal = fileChooser.showSaveDialog(CloudComputingSimulatorUI.this);
+            SaveButton.save();
             
         }
     }//GEN-LAST:event_Save2ActionPerformed
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
         // TODO add your handling code here:
-        
-        String classPathNameValue;
-        JComboBox jcb = new JComboBox();
-        jcb.setModel(listModel);
-        jcb.setEditable(true);
-        
-        Object[] options = {"OK","CANCEL"};
-        
-        int option = JOptionPane.showConfirmDialog( null, jcb, "select or type a value", JOptionPane.OK_CANCEL_OPTION);
-        if (option == JOptionPane.OK_OPTION) {
-             JOptionPane.showOptionDialog(null, "Set Successful", "Congratulations", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
-            classPathNameValue  = (String)jcb.getSelectedItem();
-            jTextField10.setText(classPathNameValue);
-        } else {
-            JOptionPane.showOptionDialog(null, "Configure Canceled", "Warning", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-        }
-        
-        
-        
+        AppSetButton.AppPathSet();
     }//GEN-LAST:event_jButton14ActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         // TODO add your handling code here:
-        JTextField vmName = new JTextField();
-        JTextField diskSize = new JTextField();
-        JTextField memSize = new JTextField();
-        JTextField power = new JTextField();
-        Object[] message = {
-            "VM Name:", vmName,
-            "Disk Size:", diskSize,
-            "Mem Size", memSize,
-            "Power",power
-        };
-        
-        
-        
-        Object[] options = {"OK","CANCEL"};
-        int option = JOptionPane.showConfirmDialog(null, message, "Input the Values", JOptionPane.OK_CANCEL_OPTION);
-        if (option == JOptionPane.OK_OPTION) {
-            
-            
-            if (vmName.getText().isEmpty() && diskSize.getText().isEmpty() && memSize.getText().isEmpty()&& power.getText().isEmpty()) {
-                JOptionPane.showOptionDialog(null, "No Value Input", "Warning", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-            } else {
-                JOptionPane.showOptionDialog(null, "Set Successful", "Congratulations", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
-            }
-            String vmNameValue = vmName.getText();
-            String diskSizeValue = diskSize.getText();
-            String memSizeValue = memSize.getText();
-            String powerValue = power.getText();
-            long diskSizeValueLong;
-            long memSizeValueLong;
-            long powerLong;
-            diskSizeValueLong = Long.parseLong(diskSizeValue);
-            memSizeValueLong = Long.parseLong(memSizeValue);
-            powerLong=Long.parseLong(powerValue);
-            jTextField5.setText(vmNameValue);
-            jTextField6.setText(diskSizeValue);
-            jTextField7.setText(memSizeValue);
-            jTextField8.setText(powerValue);
-            
-           
-        } else {
-            JOptionPane.showOptionDialog(null, "Configure Canceled", "Warning", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-        }
+        VmSetButton.VmSet();
     }//GEN-LAST:event_jButton12ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
-        JTextField latency= new JTextField();
-
-        Object[] message = {
-            "Latency:", latency
-        };
-        
-        
-        
-        
-        
-        Object[] options = {"OK","CANCEL"};
-        int option = JOptionPane.showConfirmDialog(null, message, "Input the Values", JOptionPane.OK_CANCEL_OPTION);
-        if (option == JOptionPane.OK_OPTION) {
- 
-            if (latency.getText().isEmpty() ) {
-                JOptionPane.showOptionDialog(null, "No Value Input", "Warning", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-            } else {
-                JOptionPane.showOptionDialog(null, "Set Successful", "Congratulations", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
-            }
-            String latencyValue = latency.getText();
-            double latencyValueDouble;
-            latencyValueDouble = Double.parseDouble(latencyValue);
-            jTextField4.setText(latencyValue);
-        } else {
-            JOptionPane.showOptionDialog(null, "Configure Canceled", "Warning", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-        }
+      NetWorkSetButton.NetWorkSet();
 
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        JTextField cloudName = new JTextField();
-        JTextField latitude = new JTextField();
-        JTextField longitude = new JTextField();
-        Object[] message = {
-            "Name:", cloudName,
-            "Latitude:", latitude,
-            "Longitude", longitude
-        };
-        
-       
-         
-         
-        Object[] options = {"OK","CANCEL"};
-        int option = JOptionPane.showConfirmDialog(null, message, "Input the Values", JOptionPane.OK_CANCEL_OPTION);
-        if (option == JOptionPane.OK_OPTION) {
-           
-            if (cloudName.getText().isEmpty() && latitude.getText().isEmpty() && longitude.getText().isEmpty()) {
-                JOptionPane.showOptionDialog(null, "No Value Input", "Warning", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-            } else {
-                JOptionPane.showOptionDialog(null, "Set Successful", "Congratulations", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
-            }
-            String cloudNameValue = cloudName.getText();
-            String LatitudeValue = latitude.getText();
-            String LongitudeValue = longitude.getText();
-          
-            double LatitudeValueDouble;
-            double LongitudeValueDouble;
-            LatitudeValueDouble = Double.parseDouble(LatitudeValue);
-            LongitudeValueDouble = Double.parseDouble(LongitudeValue);
-            jTextField1.setText(cloudNameValue);
-            jTextField2.setText(LatitudeValue);
-            jTextField3.setText(LongitudeValue);
-        } else {
-            JOptionPane.showOptionDialog(null, "Configure Canceled", "Warning", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-        }
-         
-         
-
+     CloudSetButton.CloudSet();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -1369,24 +1011,7 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
-        String classNameValue;
-        JComboBox jcb2 = new JComboBox();
-        jcb2.setModel(listModel2);
-        jcb2.setEditable(true);
-        
-        
-        Object[] options = {"OK","CANCEL"};
-        
-        int option = JOptionPane.showConfirmDialog( null, jcb2, "select or type a value", JOptionPane.OK_CANCEL_OPTION);
-        if (option == JOptionPane.OK_OPTION) {
-             JOptionPane.showOptionDialog(null, "Set Successful", "Congratulations", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
-            classNameValue  = (String)jcb2.getSelectedItem();
-            jTextField9.setText(classNameValue);
-        } else {
-            JOptionPane.showOptionDialog(null, "Configure Canceled", "Warning", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-        }
-        
-        
+        AppSetButton.AppNameSet();
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void pathNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pathNameActionPerformed
@@ -1396,19 +1021,9 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
     private void Open1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Open1ActionPerformed
         // TODO add your handling code here:
         //Handle open button action.
-
         if (evt.getSource() == Open1) {
-            int returnVal = fileChooser.showOpenDialog(CloudComputingSimulatorUI.this);
-
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fileChooser.getSelectedFile();
-                //This is where a real application would open the file.
-                listModel2.addElement(file.getName());
-                listModel.addElement(file.getPath());
-
-            }
-
-            //Handle save button action.
+             returnVal = fileChooser.showOpenDialog(CloudComputingSimulatorUI.this);
+             ChooseApp.AppChoose();
         }
     }//GEN-LAST:event_Open1ActionPerformed
 
@@ -1423,26 +1038,13 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
 
     private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
         // TODO add your handling code here:
-        
-        
-         // Create a stream to hold the output
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PrintStream ps = new PrintStream(baos);
-        // IMPORTANT: Save the old System.out!
-        PrintStream old = System.out;
-        // Tell Java to use your special stream
-        System.setOut(ps);
-        // Print some output: goes to your special stream
-        MyImportData.run();
-        // Put things back
-        System.out.flush();
-        System.setOut(old);
-      
-        logTextArea.append(baos.toString());
-        JOptionPane.showMessageDialog(null, baos.toString());
-        
+        PlaySim.play();
 
     }//GEN-LAST:event_playButtonActionPerformed
+
+    private void jLabel14KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel14KeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel14KeyReleased
 
     /**
      * @param args the command line arguments
@@ -1478,11 +1080,11 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Open1;
+    public static javax.swing.JButton Open1;
     private javax.swing.JButton Save2;
-    private javax.swing.JButton addButton;
-    private javax.swing.JButton deleteButton;
-    private javax.swing.JFileChooser fileChooser;
+    public static javax.swing.JButton addButton;
+    public static javax.swing.JButton deleteButton;
+    public static javax.swing.JFileChooser fileChooser;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -1500,10 +1102,10 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
+    public static javax.swing.JLabel jLabel14;
+    public static javax.swing.JLabel jLabel15;
+    public static javax.swing.JLabel jLabel16;
+    public static javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
@@ -1517,19 +1119,19 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel3;
+    public static javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
+    public static javax.swing.JLabel jLabel7;
+    public static javax.swing.JLabel jLabel8;
+    public static javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
-    private javax.swing.JList jList1;
-    private javax.swing.JList jList2;
+    public static javax.swing.JList jList1;
+    public static javax.swing.JList jList2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -1548,7 +1150,7 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
+    public static javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
@@ -1557,20 +1159,20 @@ public class CloudComputingSimulatorUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
-    private javax.swing.JTextArea logTextArea;
-    private javax.swing.JTextField pathName;
+    public static javax.swing.JTextField jTextField1;
+    public static javax.swing.JTextField jTextField10;
+    public static javax.swing.JTextField jTextField2;
+    public static javax.swing.JTextField jTextField3;
+    public static javax.swing.JTextField jTextField4;
+    public static javax.swing.JTextField jTextField5;
+    public static javax.swing.JTextField jTextField6;
+    public static javax.swing.JTextField jTextField7;
+    public static javax.swing.JTextField jTextField8;
+    public static javax.swing.JTextField jTextField9;
+    public static javax.swing.JTextArea logTextArea;
+    public static javax.swing.JTextField pathName;
     private javax.swing.JButton playButton;
-    private javax.swing.JButton removeButton;
+    public static javax.swing.JButton removeButton;
     // End of variables declaration//GEN-END:variables
 }
 

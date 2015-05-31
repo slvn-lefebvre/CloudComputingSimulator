@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package my.cloudcomputingsimulator;
+package my.simulation;
 
 import fr.isep.simizer.Simulation;
 import fr.isep.simizer.laws.ConstantLaw;
@@ -20,10 +20,11 @@ import fr.isep.simizer.requests.RequestFactory;
  */
 public class MyImportData {
     
+     //public static Simulation simulation = new Simulation(10000);
 
 public static void run() {
   
-    Simulation simulation = new Simulation(10000);
+   Simulation simulation = new Simulation(10000);
 
     ClientNode client = new ClientNode(0, 1);
 

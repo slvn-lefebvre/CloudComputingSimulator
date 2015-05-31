@@ -70,6 +70,11 @@ version 0.6 at 29 May 2015
 by Zhengshuai
 
 ---
+version 0.7 at 31 May 2015
+
+*	divide the class to separated class
+*	fix some details 
+
 
 =======
 A project of initial research in ISEP with the Prof. Sylvain Lefebvre
