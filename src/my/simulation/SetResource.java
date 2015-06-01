@@ -27,7 +27,7 @@ public class SetResource {
     // 1 KB.  These Resources are referenced starting from zero.
     
     // Next, let's create a storage element with these resources.
-    disk = new StorageElement(StorageElement.MEGABYTE, 7);
+    disk = new StorageElement(10 * StorageElement.GIGABYTE, 7);
     //isk = diskSizeValueLong;
     
     for (int i = 0; i < 10; i++) {
